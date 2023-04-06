@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "696413366643",
+    "project_id": "mount-connect",
+    "storage_bucket": "mount-connect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696413366643:android:433dde8e304738e93b3d06",
+        "android_client_info": {
+          "package_name": "com.example.mountconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696413366643-rojq7568s4d1u4j6v21t00jhgf1p0toh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoCdKXBC7T1_xx1NL6erVwMfOK8FKW3mI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696413366643-rojq7568s4d1u4j6v21t00jhgf1p0toh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
