@@ -1,5 +1,6 @@
 package com.example.mountconnect
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ class UserAdapter(val context: Context, val userList: ArrayList<User>):
         return UserViewHolder(view)
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
 
         val currentUser = userList[position]
