@@ -41,7 +41,8 @@ class SignIn : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val intent = Intent(this@SignIn, chat::class.java)
+                    val intent = Intent(this@SignIn, chatList::class.java)
+                    finish()
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "User doesn't exist", Toast.LENGTH_SHORT).show()
