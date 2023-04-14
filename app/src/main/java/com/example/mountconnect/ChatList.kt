@@ -12,21 +12,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.auth.User
 
-class chatList : AppCompatActivity() {
+class ChatList : AppCompatActivity() {
 
     private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userList: ArrayList<User>
+    private lateinit var userList: ArrayList<user>
     private lateinit var adapter: UserAdapter
     private lateinit var Auth: FirebaseAuth
-    private lateinit var Dbref : DatabaseReference
+    private lateinit var mDbref : DatabaseReference
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+        setContentView(R.layout.activity_chat_list)
 
         Auth = FirebaseAuth.getInstance()
-        Dbref = FirebaseDatabase.getInstance().getReference()
+        mDbref = FirebaseDatabase.getInstance().reference
 
 
         userList = ArrayList()
@@ -37,16 +38,21 @@ class chatList : AppCompatActivity() {
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.adapter = adapter
 
-        Dbref.child("user").addValueEventListener(object: ValueEventListener{
+
+
+
+
+
+        mDbref.child("user").addValueEventListener(object: ValueEventListener{
             @SuppressLint("RestrictedApi")
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 userList.clear()
                 for(postSnapshot in snapshot.children){
 
-                    val currentUser = postSnapshot.getValue(User::class.java)
+                    val currentUser = postSnapshot.getValue(user::class.java)
 
-                    if(Auth.currentUser?.uid!= currentUser?.uid){
+                    if(Auth.currentUser?.uid!= currentUser?.name){
 
                         userList.add(currentUser!!)
                     }
@@ -72,7 +78,7 @@ class chatList : AppCompatActivity() {
 
         if (item.itemId == R.id.logout){
             Auth.signOut()
-            val intent = Intent(this@chatList, SignIn::class.java)
+            val intent = Intent(this@ChatList, SignIn::class.java)
             finish()
             startActivity(intent)
             return true

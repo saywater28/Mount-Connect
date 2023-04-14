@@ -12,11 +12,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.hide()
 
         getStarted = findViewById(R.id.getStarted)
 
         getStarted.setOnClickListener {
-            val intent = Intent(this, Start::class.java)
+            val intent = Intent(this, SignUp::class.java)
             startActivity(intent)
         }
 

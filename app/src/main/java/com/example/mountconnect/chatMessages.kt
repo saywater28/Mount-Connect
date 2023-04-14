@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Im
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -25,6 +26,7 @@ class chatMessages : AppCompatActivity() {
 
     var receiverRoom: String? = null
     var senderRoom: String? = null
+     var senderUid:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +35,13 @@ class chatMessages : AppCompatActivity() {
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
 
-        val senderUid = FirebaseAuth.getInstance().currentUser?.uid
+         senderUid = FirebaseAuth.getInstance().currentUser?.uid
         Dbref = FirebaseDatabase.getInstance().getReference()
 
-        senderRoom = receiverUid + senderUid
-        receiverRoom = senderUid + receiverUid
+        senderRoom = senderUid
+        receiverRoom = senderUid
 
         supportActionBar?.title = name
-
 
         chatRecyclerView = findViewById(R.id.chatRecyclerView)
         messageBox = findViewById(R.id.messageBox)
@@ -50,8 +51,27 @@ class chatMessages : AppCompatActivity() {
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
-
         // logic for adding data to RecyclerView
+        Log.i("adi", senderRoom.toString())
+
+
+        // adding the message to database
+        sendButton.setOnClickListener {
+
+            val message = messageBox.text.toString()
+            val messageObject = Message(message, senderUid)
+
+            Dbref.child("chats").child(senderUid!!).child("messages").push()
+                .setValue(messageObject).addOnSuccessListener {
+                    setValuestoRCV()
+
+                }
+            messageBox.setText("")
+
+        }
+    }
+
+    private fun setValuestoRCV() {
         Dbref.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -74,19 +94,5 @@ class chatMessages : AppCompatActivity() {
 
             })
 
-
-        // adding the message to database
-        sendButton.setOnClickListener {
-
-            val message = messageBox.text.toString()
-            val messageObject = Message(message, senderUid)
-
-            Dbref.child("chats").child(senderRoom!!).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                    Dbref.child("chats").child(receiverRoom!!).child("messages").push()
-                        .setValue(messageObject)
-                }
-            messageBox.setText("")
-        }
     }
 }
